@@ -16,6 +16,8 @@ user_guide = r"""
 
 1. print    2. If Statement     3. For Loop     4. Variable     5. If-Else
 
+6. Math(expression)
+
 command: press "c" for clear the system
 
 """
@@ -76,13 +78,16 @@ def generate_action(action, indent=1):
 
         return space + f'{action["name"]} = {value}\n'
 
+    elif action["type"] == "math":
+        return space + f'print({action["left"]} {action["operator"]} {action["right"]})\n'
+
     return space + "#unknown action / value :("
 
 def generate_code(data):
     code = ""
 
     if data["event"] == "function":
-        code += "\ndef MyFunction():\n"
+        code += "\nOUTPUT CODE:\ndef MyFunction():\n"
 
         for action in data["action"]:
             code += generate_action(action)
@@ -127,7 +132,7 @@ while True:
                 "action": [
                     {
                         "type": "if",
-                        "condition": "user_data",
+                        "condition": user_data,
                         "action": [
                             {"type": "print", "text": "If Statement was created!"}
                             ]
@@ -138,26 +143,6 @@ while True:
         result = generate_code(data)
         print(result)
 
-    elif input_select == "5":
-        print("build the if-else state condition: ")
-        user_data = input(">> ")
-        data = {
-                "event": "function",
-                "action": [
-                    {
-                        "type": "if-else",
-                        "condition": user_data,
-                        "action": [
-                            {"type": "print", "text": "if-else state was created!"}
-                            ]
-                        }
-                    ]
-                }
-
-        result = generate_code(data)
-        print(result)
-
-
     elif input_select == "3":
         print("Build For Loop: ")
         user_data = input(">> ")
@@ -165,7 +150,7 @@ while True:
                 "event": "function",
                 "action": [
                     {
-                        "type": "if",
+                        "type": "loop",
                         "times": user_data,
                         "action": [
                             {"type": "print", "text": "for loop is created!"}
@@ -196,3 +181,100 @@ while True:
 
         result = generate_code(data)
         print(result)
+
+    elif input_select == "5":
+        print("build the if-else state condition: ")
+        user_data = input(">> ")
+        data = {
+                "event": "function",
+                "action": [
+                    {
+                        "type": "if-else",
+                        "condition": user_data,
+                        "action": [
+                            {"type": "print", "text": "if-else state was created!"}
+                            ]
+                        }
+                    ]
+                }
+
+        result = generate_code(data)
+        print(result)
+
+    elif input_select == "6":
+        print("select the expression: \n1. + (to add, ex(1 + 2))\n2. - (to subtract, ex(2 - 1))\n3. * (to multiply, ex(2 * 3))\n4. / (to divide, ex(8 / 4))")
+        while True:
+            expression_input = input("note: press x to leave math >> ").lower()
+            
+            if expression_input == "+":
+                data = {
+                        "event": "function",
+                        "action": [
+                            {
+                                "type": "math",
+                                "operator": expression_input,
+                                "left": "x",
+                                "right": 5
+                                }
+                            ]
+                        }
+
+                result = generate_code(data)
+                print(result)
+
+            elif expression_input == "-":
+                data = {
+                        "event": "function",
+                        "action": [
+                            {
+                                "type": "math",
+                                "operator": expression_input,
+                                "left": "x",
+                                "right": 5
+                                }
+                            ]
+                        }
+
+                result = generate_code(data)
+                print(result)
+
+            elif expression_input == "*":
+                data = {
+                        "event": "function",
+                        "action": [
+                            {
+                                "type": "math",
+                                "operator": expression_input,
+                                "left": "x",
+                                "right": 5
+                                }
+                            ]
+                        }
+
+                result = generate_code(data)
+                print(result)
+
+            elif expression_input == "/":
+                data = {
+                        "event": "function",
+                        "action": [
+                            {
+                                "type": "math",
+                                "operator": expression_input,
+                                "left": "x",
+                                "right": 5
+                                }
+                            ]
+                        }
+
+                result = generate_code(data)
+                print(result)
+
+            elif expression_input == "x":
+                break
+
+            else:
+                print("\nplease enter expression, ex(+, -, /, *) or x to exit math mode\n")
+
+    else:
+        print("\n!#UNKNOWN ACTION :(\n")
